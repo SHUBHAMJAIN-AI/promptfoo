@@ -2,7 +2,8 @@
   "extends": ["local>promptfoo/renovate-config"],
   "rebaseStalePrs": true,
   "separateMajorMinor": true,
-  "postUpdateOptions": ["npmDedupe"],
+  "rangeStrategy": "bump",
+  "postUpdateOptions": [],
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": [
@@ -17,6 +18,12 @@
     "test/**/go.mod"
   ],
   "packageRules": [
+    {
+      "description": "Disable major Node.js version updates",
+      "matchPackageNames": ["node"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
     {
       "description": "Group @inquirer packages together",
       "matchPackagePatterns": ["^@inquirer/"],
@@ -64,6 +71,13 @@
       "description": "Group GitHub Actions packages together",
       "matchPackagePatterns": ["^@actions/"],
       "groupName": "GitHub Actions"
+    },
+    {
+      "description": "Use major.minor only for Ruby versions to auto-receive patches",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["ruby"],
+      "extractVersion": "^(?<version>\\d+\\.\\d+)",
+      "versioning": "ruby"
     },
     {
       "description": "Group IBM packages together across all dependency types",
